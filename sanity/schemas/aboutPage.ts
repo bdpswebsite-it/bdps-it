@@ -115,6 +115,7 @@ export const aboutPageSchema = {
       ],
       of: [
         {
+          name: 'spotlightPillar',
           type: 'object',
           fields: [
             {
@@ -172,6 +173,7 @@ export const aboutPageSchema = {
       ],
       of: [
         {
+          name: 'statItem',
           type: 'object',
           fields: [
             { name: 'value', title: 'Stat Number (e.g. 20 or 12,000)', type: 'string' },
@@ -228,6 +230,7 @@ export const aboutPageSchema = {
       ],
       of: [
         {
+          name: 'beliefItem',
           type: 'object',
           fields: [
             {

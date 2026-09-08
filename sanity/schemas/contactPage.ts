@@ -61,6 +61,7 @@ export const contactPageSchema = {
       ],
       of: [
         {
+          name: 'branch',
           type: 'object',
           fields: [
             { name: 'name', title: 'Branch / Campus Name', type: 'string', initialValue: 'Kakinada Campus (Corporate HQ)' },
@@ -120,6 +121,7 @@ export const contactPageSchema = {
       fieldset: 'itProjects',
       of: [
         {
+          name: 'itProject',
           type: 'object',
           fields: [
             { name: 'title', title: 'Project Title', type: 'string', validation: (Rule: any) => Rule.required() },

@@ -4,6 +4,7 @@ export const jobPostingSchema = {
   type: 'document',
   fields: [
     { name: 'isCustom', title: 'Custom Client Job?', type: 'boolean', initialValue: true, description: 'Set to true for jobs manually posted by BDPS' },
+    { name: 'showInMarquee', title: 'Show in Homepage Job Marquee?', type: 'boolean', initialValue: true, description: 'Toggle ON to highlight/feature this job listing in the homepage scrolling marquee banner.' },
     { name: 'title', title: 'Job Title', type: 'string', validation: (Rule: any) => Rule.required() },
     { name: 'company', title: 'Company Name', type: 'string', validation: (Rule: any) => Rule.required() },
     { name: 'location', title: 'Location', type: 'string', description: 'e.g. Hyderabad, Visakhapatnam, Remote' },

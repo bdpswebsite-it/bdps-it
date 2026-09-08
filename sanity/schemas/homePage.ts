@@ -7,9 +7,49 @@ export const homePageSchema = {
     { name: 'whyBdps', title: '⭐ Why Choose BDPS Section', options: { collapsible: true, collapsed: false } },
     { name: 'csr', title: '🤝 CSR Initiative Collaboration', options: { collapsible: true, collapsed: false } },
     { name: 'pillars', title: '🎓 8 Student Support Pillars', options: { collapsible: true, collapsed: false } },
+    { name: 'jobsMarquee', title: '🔥 Job Openings & Announcement Marquee', options: { collapsible: true, collapsed: false } },
     { name: 'partners', title: '🤝 Hiring Partners Section', options: { collapsible: true, collapsed: false } },
   ],
   fields: [
+    // Jobs Marquee Settings
+    {
+      name: 'jobsMarqueeTitle',
+      title: 'Job Marquee Badge Title',
+      type: 'string',
+      fieldset: 'jobsMarquee',
+      initialValue: '🔥 LATEST JOB OPENINGS',
+      description: 'Text shown on the tag/badge for the job scrolling ticker on the home page.',
+    },
+    {
+      name: 'customJobMarqueeItems',
+      title: 'Extra Job & Announcement Marquee Ticker Items',
+      type: 'array',
+      fieldset: 'jobsMarquee',
+      description: 'Add extra custom job entries, urgent hiring alerts, or announcements to display in the homepage marquee slider.',
+      initialValue: [
+        { company: 'TCS / INFOSYS', title: 'Special Off-Campus Drive for Trained Freshers', location: 'Hyderabad / Vizag' },
+        { company: 'BDPS CAREER CELL', title: '100+ Active IT & Accounting Placements Open', location: 'Kakinada HQ' },
+      ],
+      of: [
+        {
+          name: 'marqueeItem',
+          type: 'object',
+          title: 'Marquee Ticker Item',
+          fields: [
+            { name: 'company', title: 'Company / Badge Text', type: 'string', initialValue: 'BDPS PARTNER' },
+            { name: 'title', title: 'Job / Announcement Title', type: 'string', validation: (Rule: any) => Rule.required() },
+            { name: 'location', title: 'Location / Subtitle (Optional)', type: 'string' },
+            { name: 'link', title: 'Target Link URL (Optional)', type: 'string', description: 'Optional relative path like /jobs or external URL' },
+          ],
+          preview: {
+            select: {
+              title: 'title',
+              subtitle: 'company',
+            },
+          },
+        },
+      ],
+    },
     // Section Headings
     {
       name: 'featuredCoursesTitle',
@@ -138,6 +178,7 @@ export const homePageSchema = {
       ],
       of: [
         {
+          name: 'supportPillar',
           type: 'object',
           fields: [
             {
@@ -190,20 +231,38 @@ export const homePageSchema = {
     },
     {
       name: 'hiringPartners',
-      title: 'Hiring Partner Company Names',
+      title: 'Hiring Partner Companies & Logos',
       type: 'array',
       fieldset: 'partners',
-      of: [{ type: 'string' }],
+      description: 'Add company names or upload company partner logos for the scrolling alumni partner marquee.',
+      of: [
+        {
+          name: 'companyPartner',
+          title: 'Company Partner with Logo',
+          type: 'object',
+          fields: [
+            { name: 'name', title: 'Company Name', type: 'string', validation: (Rule: any) => Rule.required() },
+            { name: 'logo', title: 'Company Logo Image (Optional)', type: 'image', options: { hotspot: true } },
+            { name: 'website', title: 'Website URL (Optional)', type: 'url' },
+          ],
+          preview: {
+            select: {
+              title: 'name',
+              media: 'logo',
+            },
+          },
+        },
+      ],
       initialValue: [
-        'TCS',
-        'Infosys',
-        'Wipro',
-        'Cognizant',
-        'Accenture',
-        'Tech Mahindra',
-        'HCL Tech',
-        'Local IT Solutions',
-        'Business Accounts Firms',
+        { name: 'TCS' },
+        { name: 'Infosys' },
+        { name: 'Wipro' },
+        { name: 'Cognizant' },
+        { name: 'Accenture' },
+        { name: 'Tech Mahindra' },
+        { name: 'HCL Tech' },
+        { name: 'Local IT Solutions' },
+        { name: 'Business Accounts Firms' },
       ],
     },
   ],

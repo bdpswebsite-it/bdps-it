@@ -181,6 +181,7 @@ export const siteSettingsSchema = {
       ],
       of: [
         {
+          name: 'popularCourse',
           type: 'object',
           fields: [
             { name: 'label', title: 'Course Name / Link Text', type: 'string' },
@@ -209,6 +210,7 @@ export const siteSettingsSchema = {
       ],
       of: [
         {
+          name: 'quickLink',
           type: 'object',
           fields: [
             { name: 'label', title: 'Link Label', type: 'string' },

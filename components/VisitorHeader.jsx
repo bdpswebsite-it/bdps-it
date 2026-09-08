@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { 
+import {
   ChevronDown, Award, Phone, Mail, Briefcase, ArrowRight, Sparkles, X
 } from 'lucide-react';
 import StipendRegistrationModal from './StipendRegistrationModal';
@@ -15,7 +15,7 @@ import { fetchCached } from '@/lib/api-cache';
 export default function VisitorHeader() {
   const pathname = usePathname();
   const router = useRouter();
-  
+
   const [stipendModalOpen, setStipendModalOpen] = useState(false);
   const [internshipModalOpen, setInternshipModalOpen] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
@@ -71,7 +71,7 @@ export default function VisitorHeader() {
           stipendNoticeText: sessionStorage.getItem('bdps_stipend_notice') || 'Stipend registrations for the current batch are now closed.'
         });
       }
-    } catch (e) {}
+    } catch (e) { }
 
     // Fresh fetch site settings with deduplication & caching
     fetchCached('/api/site-settings')
@@ -83,7 +83,7 @@ export default function VisitorHeader() {
             if (data.settings.stipendNoticeText) {
               sessionStorage.setItem('bdps_stipend_notice', data.settings.stipendNoticeText);
             }
-          } catch (e) {}
+          } catch (e) { }
         }
       })
       .catch(err => console.error('Error fetching site settings:', err));
@@ -93,7 +93,7 @@ export default function VisitorHeader() {
     setAnnouncementClosed(true);
     try {
       sessionStorage.setItem('bdps_announcement_closed', 'true');
-    } catch (e) {}
+    } catch (e) { }
   };
 
   const navLinks = [
@@ -102,8 +102,8 @@ export default function VisitorHeader() {
     { title: 'Jobs', href: '/jobs' },
     { title: 'Verify Certificate', href: '/verify-certificate' },
     { title: 'About Us', href: '/about' },
-    { 
-      title: 'Contact Us', 
+    {
+      title: 'Contact Us',
       href: '/contact',
       dropdown: [
         { label: 'Student Inquiry', href: '/contact?type=student' },
@@ -163,9 +163,9 @@ export default function VisitorHeader() {
               {/* 1. Left: Brand Logo */}
               <Link href="/" className="navbar-logo">
                 {siteSettings?.headerLogo ? (
-                  <img 
-                    src={siteSettings.headerLogo} 
-                    alt={siteSettings?.headerBrandTitle || 'BDPS Computer Education & IT Solutions'} 
+                  <img
+                    src={siteSettings.headerLogo}
+                    alt={siteSettings?.headerBrandTitle || 'BDPS Computer Education & IT Solutions'}
                     className="navbar-logo-img"
                     width="240"
                     height="100"
@@ -322,8 +322,8 @@ export default function VisitorHeader() {
                         <span className="mega-menu-footer-hint">
                           💡 100% Practical Computer Labs & Placement Assistance
                         </span>
-                        <Link 
-                          href="/courses" 
+                        <Link
+                          href="/courses"
                           className="mega-menu-footer-link"
                           onClick={() => setActiveDropdown(null)}
                         >

@@ -36,6 +36,11 @@ export const DEFAULT_HOME_PAGE = {
     { icon: 'Award', title: 'Placement Assistance', desc: 'Direct job referrals to AP & MNC employer partners.' },
     { icon: 'Compass', title: 'Career Counseling', desc: '1-on-1 personalized career roadmap guidance.' },
   ],
+  jobsMarqueeTitle: '🔥 LATEST JOB OPENINGS',
+  customJobMarqueeItems: [
+    { company: 'TCS / INFOSYS', title: 'Special Off-Campus Drive for Trained Freshers', location: 'Hyderabad / Vizag', link: '/jobs' },
+    { company: 'BDPS CAREER CELL', title: '100+ Active IT & Accounting Placements Open', location: 'Kakinada HQ', link: '/jobs' },
+  ],
   hiringPartnersTitle: 'Our Alumni Work At Top IT & Enterprise Firms',
   hiringPartnersSubtitle: 'Direct placement referrals with 800+ recruiting enterprises and regional offices.',
   hiringPartners: [

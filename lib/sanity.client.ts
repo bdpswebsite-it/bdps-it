@@ -228,9 +228,18 @@ export async function getSanityHomePage() {
       csrTitle,
       csrDescription,
       supportPillars,
+      jobsMarqueeTitle,
+      customJobMarqueeItems,
       hiringPartnersTitle,
       hiringPartnersSubtitle,
-      hiringPartners
+      "hiringPartners": hiringPartners[] {
+        _type == "companyPartner" => {
+          name,
+          "logo": logo.asset->url,
+          website
+        },
+        _type != "companyPartner" => @
+      }
     }`;
     const homeData = await sanityClient.fetch(query, {}, { cache: 'no-store' });
     return homeData || null;

@@ -194,6 +194,11 @@ export default function VisitorHomepage() {
     : courses.filter(c => c.category && c.category.toLowerCase().includes(selectedCategoryTab.toLowerCase()))
   ).slice(0, 6);
 
+  const jobMarqueeItems = [
+    ...(homeData.customJobMarqueeItems || []),
+    ...latestJobs.filter(j => j.showInMarquee !== false)
+  ];
+
   const partners = (homeData.hiringPartners && homeData.hiringPartners.length > 0) 
     ? homeData.hiringPartners 
     : DEFAULT_HOME_PAGE.hiringPartners;
@@ -401,8 +406,8 @@ export default function VisitorHomepage() {
         </div>
       </section>
 
-      {/* Latest Real Jobs Scrolling Marquee Banner (Identical to Alumni Marquee Structure) */}
-      {latestJobs.length > 0 && (
+      {/* Latest Real & Custom Jobs Scrolling Marquee Banner (Identical to Alumni Marquee Structure) */}
+      {jobMarqueeItems.length > 0 && (
         <>
           {/* Announcement Bar directly on top of Marquee */}
           <div className="visitor-announcement-bar visitor-announcement-bar-permanent">
@@ -414,27 +419,30 @@ export default function VisitorHomepage() {
           <section className="marquee-section" style={{ background: 'linear-gradient(135deg, #BD601C 0%, #7A3700 100%)' }}>
             <div className="marquee-header">
               <span className="marquee-tag">
-                🔥 LATEST JOB OPENINGS
+                {homeData.jobsMarqueeTitle || '🔥 LATEST JOB OPENINGS'}
               </span>
             </div>
 
             <div className="marquee-container">
               <div className="jobs-marquee-single-track">
-                {latestJobs.map((job, idx) => (
-                  <Link 
-                    key={idx} 
-                    href={`/jobs/${job._id || job.id || job.adzunaId}`}
-                    className="marquee-item"
-                    style={{ color: '#ffffff', textDecoration: 'none' }}
-                  >
-                    <span style={{ fontWeight: '800', color: '#FFEAD5', textTransform: 'uppercase' }}>{job.company || 'BDPS Partner'}</span>
-                    <span style={{ textTransform: 'uppercase' }}>{job.title}</span>
-                    {job.location && (
-                      <span style={{ color: '#FFD8B2', fontSize: '12px' }}>({job.location})</span>
-                    )}
-                    <span className="marquee-bullet">•</span>
-                  </Link>
-                ))}
+                {jobMarqueeItems.map((job, idx) => {
+                  const targetHref = job.link || (job._id || job.id ? `/jobs/${job._id || job.id || job.adzunaId}` : '/jobs');
+                  return (
+                    <Link 
+                      key={idx} 
+                      href={targetHref}
+                      className="marquee-item"
+                      style={{ color: '#ffffff', textDecoration: 'none' }}
+                    >
+                      <span style={{ fontWeight: '800', color: '#FFEAD5', textTransform: 'uppercase' }}>{job.company || 'BDPS Partner'}</span>
+                      <span style={{ textTransform: 'uppercase' }}>{job.title}</span>
+                      {job.location && (
+                        <span style={{ color: '#FFD8B2', fontSize: '12px' }}>({job.location})</span>
+                      )}
+                      <span className="marquee-bullet">•</span>
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           </section>
@@ -458,16 +466,23 @@ export default function VisitorHomepage() {
         </div>
 
         {/* Category Tabs Selector */}
-        <div className="category-tabs-row">
-          {categoriesList.map((cat, idx) => (
-            <button
-              key={idx}
-              onClick={() => setSelectedCategoryTab(cat)}
-              className={`category-tab-btn ${selectedCategoryTab === cat ? 'category-tab-active' : ''}`}
-            >
-              {cat}
-            </button>
-          ))}
+        <div className="category-pills-row" style={{ marginBottom: '24px' }}>
+          {categoriesList.map((cat, idx) => {
+            const count = cat === 'All'
+              ? courses.length
+              : courses.filter(c => c.category && c.category.toLowerCase().includes(cat.toLowerCase())).length;
+
+            return (
+              <button
+                key={idx}
+                onClick={() => setSelectedCategoryTab(cat)}
+                className={`category-pill-btn ${selectedCategoryTab === cat ? 'active' : ''}`}
+              >
+                <span>{cat}</span>
+                <span className="pill-count-badge">{count}</span>
+              </button>
+            );
+          })}
         </div>
 
         {/* Courses Grid - Up to 6 Courses */}
@@ -503,12 +518,36 @@ export default function VisitorHomepage() {
 
         <div className="marquee-container">
           <div className="marquee-track">
-            {[...partners, ...partners, ...partners, ...partners].map((partner, idx) => (
-              <div key={idx} className="marquee-item">
-                <span>{partner}</span>
-                <span className="marquee-bullet">•</span>
-              </div>
-            ))}
+            {[...partners, ...partners, ...partners, ...partners].map((partner, idx) => {
+              const isObj = typeof partner === 'object' && partner !== null;
+              const name = isObj ? (partner.name || partner.company || partner.title) : partner;
+              const logo = isObj ? partner.logo : null;
+              const website = isObj ? partner.website : null;
+
+              const content = (
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                  {logo && (
+                    <img 
+                      src={logo} 
+                      alt={name} 
+                      style={{ height: '26px', maxWidth: '100px', objectFit: 'contain', verticalAlign: 'middle' }} 
+                    />
+                  )}
+                  <span>{name}</span>
+                </span>
+              );
+
+              return (
+                <div key={idx} className="marquee-item">
+                  {website ? (
+                    <a href={website} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>
+                      {content}
+                    </a>
+                  ) : content}
+                  <span className="marquee-bullet">•</span>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

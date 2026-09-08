@@ -284,6 +284,38 @@ function ContactFormContent() {
 
       {/* Main Content */}
       <main className="contact-container">
+        {/* Upcoming IT Projects Showcase Container for Collaboration (First in Collaboration Mode) */}
+        {isCollab && (contactData.upcomingITProjects || []).length > 0 && (
+          <section className="it-projects-section" style={{ marginBottom: '44px' }}>
+            <div className="section-header-center" style={{ textAlign: 'center', marginBottom: '32px' }}>
+              <h2 className="section-title" style={{ fontSize: '26px', fontWeight: '800', color: '#0F172A' }}>
+                Upcoming IT Projects & <span className="section-title-accent" style={{ color: '#FF7518' }}>Collaboration Opportunities</span>
+              </h2>
+              <p className="about-paragraph" style={{ maxWidth: '760px', margin: '8px auto 0 auto', color: '#64748B', fontSize: '14.5px' }}>
+                Explore active enterprise software, AI solutions, and capstone initiatives at BDPS. Corporate clients & institutions can collaborate on software development, talent sponsorship, or joint technical projects.
+              </p>
+            </div>
+
+            <div className="it-projects-grid">
+              {(contactData.upcomingITProjects || []).map((project, idx) => (
+                <ProjectCardItem
+                  key={idx}
+                  project={project}
+                  onOpenModal={(proj) => setActiveProjectModal(proj)}
+                  onPartnerClick={(proj) => {
+                    setCollabForm(prev => ({
+                      ...prev,
+                      collabType: 'IT Solutions & Enterprise Software',
+                      message: `Inquiring regarding partnership for project: ${proj.title}`
+                    }));
+                    document.getElementById('contact-form-card')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                />
+              ))}
+            </div>
+          </section>
+        )}
+
         <div className="contact-grid">
           {/* Left: Contact Info & Corporate HQ Map Card */}
           <div className="contact-card">
@@ -343,7 +375,7 @@ function ContactFormContent() {
           </div>
 
           {/* Right: Form Card */}
-          <div className="contact-form-card">
+          <div id="contact-form-card" className="contact-form-card">
             <h3 className="contact-card-title">
               {isCollab ? 'Submit Collaboration Proposal' : 'Leave a Message'}
             </h3>
@@ -527,38 +559,6 @@ function ContactFormContent() {
           </div>
         </div>
 
-        {/* Upcoming IT Projects Showcase Container for Collaboration */}
-        {isCollab && (contactData.upcomingITProjects || []).length > 0 && (
-          <section className="it-projects-section" style={{ marginTop: '54px' }}>
-            <div className="section-header-center" style={{ textAlign: 'center', marginBottom: '32px' }}>
-              <h2 className="section-title" style={{ fontSize: '26px', fontWeight: '800', color: '#0F172A' }}>
-                Upcoming IT Projects & <span className="section-title-accent" style={{ color: '#FF7518' }}>Collaboration Opportunities</span>
-              </h2>
-              <p className="about-paragraph" style={{ maxWidth: '760px', margin: '8px auto 0 auto', color: '#64748B', fontSize: '14.5px' }}>
-                Explore active enterprise software, AI solutions, and capstone initiatives at BDPS. Corporate clients & institutions can collaborate on software development, talent sponsorship, or joint technical projects.
-              </p>
-            </div>
-
-            <div className="it-projects-grid">
-              {(contactData.upcomingITProjects || []).map((project, idx) => (
-                <ProjectCardItem
-                  key={idx}
-                  project={project}
-                  onOpenModal={(proj) => setActiveProjectModal(proj)}
-                  onPartnerClick={(proj) => {
-                    setCollabForm(prev => ({
-                      ...prev,
-                      collabType: 'IT Solutions & Enterprise Software',
-                      message: `Inquiring regarding partnership for project: ${proj.title}`
-                    }));
-                    window.scrollTo({ top: 300, behavior: 'smooth' });
-                  }}
-                />
-              ))}
-            </div>
-          </section>
-        )}
-
         {/* Project Details Popup Modal */}
         {activeProjectModal && (
           <ProjectDetailsModal
@@ -570,7 +570,7 @@ function ContactFormContent() {
                 collabType: 'IT Solutions & Enterprise Software',
                 message: `Inquiring regarding partnership for project: ${proj.title}`
               }));
-              window.scrollTo({ top: 300, behavior: 'smooth' });
+              document.getElementById('contact-form-card')?.scrollIntoView({ behavior: 'smooth' });
             }}
           />
         )}
