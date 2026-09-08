@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { sanityClient } from '@/lib/sanity.client';
-import { sanityWriteClient } from '@/lib/sanity.write';
 
 export const dynamic = 'force-dynamic';
 
@@ -10,24 +9,6 @@ export async function GET(req: Request) {
     const search = searchParams.get('search')?.toLowerCase() || '';
     const category = searchParams.get('category') || 'All';
     const location = searchParams.get('location') || 'All';
-
-    // One-time automatic purge of any old Adzuna job documents from Sanity CMS
-    try {
-      const adzunaJobIds = await sanityClient.fetch(
-        `*[_type == "jobPosting" && (defined(adzunaId) || _id match "job_adzuna_*" || (defined(redirectUrl) && redirectUrl match "*adzuna.in*"))]._id`
-      );
-
-      if (Array.isArray(adzunaJobIds) && adzunaJobIds.length > 0 && process.env.SANITY_WRITE_TOKEN) {
-        const tx = sanityWriteClient.transaction();
-        for (const id of adzunaJobIds) {
-          tx.delete(id);
-        }
-        await tx.commit();
-        console.log(`[Auto-Purge] Deleted ${adzunaJobIds.length} leftover Adzuna jobs from Sanity CMS.`);
-      }
-    } catch (purgeErr) {
-      console.warn('Adzuna background purge notice:', purgeErr);
-    }
 
     // Strictly fetch ONLY custom, manually-posted admin jobs from Sanity CMS
     const query = `*[_type == "jobPosting" && !defined(adzunaId) && !(_id match "job_adzuna_*") && (!defined(redirectUrl) || !(redirectUrl match "*adzuna.in*"))] | order(postedAt desc) [0...100] {

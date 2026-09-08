@@ -82,13 +82,16 @@ export async function GET() {
         category,
         "submittedAt": publishedAt
       },
-      "certificates": *[_type == "certificate"] | order(issuedDate desc) {
+      "certificates": *[_type == "certificate"] | order(_createdAt desc) {
         _id,
-        studentName,
-        certificateNo,
+        "fullName": coalesce(fullName, studentName, "—"),
+        "regNumber": coalesce(regNumber, certificateNo, certificateId, "—"),
+        "studentName": coalesce(fullName, studentName, "—"),
+        "certificateNo": coalesce(regNumber, certificateNo, certificateId, "—"),
         courseName,
         grade,
-        "submittedAt": issuedDate
+        "issueDate": coalesce(issueDate, issuedDate, _createdAt),
+        "submittedAt": coalesce(issueDate, issuedDate, _createdAt)
       },
       "testimonials": *[_type == "testimonial"] | order(_createdAt desc) {
         _id,

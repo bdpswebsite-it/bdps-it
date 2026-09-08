@@ -232,14 +232,7 @@ export async function getSanityHomePage() {
       customJobMarqueeItems,
       hiringPartnersTitle,
       hiringPartnersSubtitle,
-      "hiringPartners": hiringPartners[] {
-        _type == "companyPartner" => {
-          name,
-          "logo": logo.asset->url,
-          website
-        },
-        _type != "companyPartner" => @
-      }
+      hiringPartners
     }`;
     const homeData = await sanityClient.fetch(query, {}, { cache: 'no-store' });
     return homeData || null;

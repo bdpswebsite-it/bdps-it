@@ -577,11 +577,11 @@ export default function LeadsSpreadsheetComponent() {
 
                           {activeTab === 'certificates' && (
                             <>
-                              <td style={{ padding: '12px 14px', fontWeight: '700', color: '#FF7518' }}>{row.studentName || '—'}</td>
-                              <td style={{ padding: '12px 14px', fontFamily: 'monospace', fontWeight: '700' }}>{row.certificateNo || '—'}</td>
+                              <td style={{ padding: '12px 14px', fontWeight: '700', color: '#FF7518' }}>{row.fullName || row.studentName || '—'}</td>
+                              <td style={{ padding: '12px 14px', fontFamily: 'monospace', fontWeight: '700' }}>{row.regNumber || row.certificateNo || row.certificateId || '—'}</td>
                               <td style={{ padding: '12px 14px' }}>{row.courseName || '—'}</td>
-                              <td style={{ padding: '12px 14px' }}><Badge tone="positive">{row.grade || 'A'}</Badge></td>
-                              <td style={{ padding: '12px 14px', color: '#94a3b8', fontSize: '12px' }}>{formatDate(row.submittedAt)}</td>
+                              <td style={{ padding: '12px 14px' }}><Badge tone="positive">{row.grade || 'Grade A+'}</Badge></td>
+                              <td style={{ padding: '12px 14px', color: '#94a3b8', fontSize: '12px' }}>{formatDate(row.issueDate || row.submittedAt)}</td>
                             </>
                           )}
 

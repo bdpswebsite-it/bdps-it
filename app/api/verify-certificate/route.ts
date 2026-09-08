@@ -13,7 +13,7 @@ export async function GET(req: Request) {
     const cleanReg = regNumber.trim();
 
     // Optimized Single GROQ query for Sanity Free Tier
-    const query = `*[_type == "certificate" && (upper(regNumber) == upper($cleanReg) || regNumber == $cleanReg)][0] {
+    const query = `*[_type == "certificate" && (lower(regNumber) == lower($cleanReg) || regNumber == $cleanReg)][0] {
       "_id": _id,
       regNumber,
       fullName,

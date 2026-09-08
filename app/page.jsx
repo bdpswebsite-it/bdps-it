@@ -19,6 +19,7 @@ import DynamicIcon from '@/components/DynamicIcon';
 import { DEFAULT_HOME_PAGE } from '@/app/api/home-page/route';
 import { DEFAULT_TESTIMONIALS } from '@/app/api/testimonials/route';
 import { fetchCached } from '@/lib/api-cache';
+import { urlFor } from '@/lib/sanity.client';
 
 const renderHeroTitle = (title, highlightWord) => {
   if (!title) return null;
@@ -199,9 +200,27 @@ export default function VisitorHomepage() {
     ...latestJobs.filter(j => j.showInMarquee !== false)
   ];
 
-  const partners = (homeData.hiringPartners && homeData.hiringPartners.length > 0) 
-    ? homeData.hiringPartners 
-    : DEFAULT_HOME_PAGE.hiringPartners;
+  const rawPartners = Array.isArray(homeData?.hiringPartners) ? homeData.hiringPartners : [];
+  const validPartners = rawPartners
+    .map(p => {
+      if (!p) return null;
+      if (typeof p === 'string') return p.trim() || null;
+      if (typeof p === 'object') {
+        const name = p.name || p.company || p.title || p.label || p.text;
+        if (typeof name === 'string' && name.trim()) {
+          const logoUrl = p.logo?.asset?.url || (typeof p.logo === 'string' ? p.logo : null) || (p.logo ? urlFor(p.logo) : null);
+          return {
+            name: name.trim(),
+            logo: logoUrl || null,
+            website: p.website || null,
+          };
+        }
+      }
+      return null;
+    })
+    .filter(Boolean);
+
+  const partners = validPartners.length > 0 ? validPartners : DEFAULT_HOME_PAGE.hiringPartners;
 
   const supportPillars = (homeData.supportPillars && homeData.supportPillars.length > 0)
     ? homeData.supportPillars
@@ -512,7 +531,7 @@ export default function VisitorHomepage() {
       <section className="marquee-section">
         <div className="marquee-header">
           <span className="marquee-tag">
-            🤝 {homeData.hiringPartnersTitle || 'Our Graduates Work at Leading Global & National Brands'}
+            🤝 {homeData.hiringPartnersTitle || 'Our Alumni Work At Top IT & Enterprise Firms'}
           </span>
         </div>
 

@@ -5116,6 +5116,7 @@ body {
 
 .form-select-plain {
   width: 100% !important;
+  max-width: 100% !important;
   box-sizing: border-box !important;
   height: 44px;
   padding: 0 14px !important;
@@ -5128,6 +5129,9 @@ body {
   transition: all 0.2s ease;
   outline: none;
   cursor: pointer;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
 }
 
 .form-select-plain:focus {
@@ -5137,6 +5141,7 @@ body {
 
 .form-select-with-icon {
   width: 100% !important;
+  max-width: 100% !important;
   box-sizing: border-box !important;
   height: 44px;
   padding: 0 32px 0 44px !important;
@@ -5151,11 +5156,26 @@ body {
   outline: none;
   cursor: pointer;
   appearance: auto;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
 }
 
 .form-select-with-icon:focus {
   border-color: #FF7518 !important;
   box-shadow: 0 0 0 3px rgba(255, 117, 24, 0.15) !important;
+}
+
+.form-select-plain option,
+.form-select-with-icon option,
+.form-select-control option,
+select option {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #1c1917;
+  background-color: #ffffff;
+  padding: 8px 12px;
+  max-width: 100%;
 }
 
 .course-gate-submit-btn {

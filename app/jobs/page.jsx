@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { 
   Briefcase, Search, MapPin, Building2, Calendar, 
-  ExternalLink, Sparkles, Filter, IndianRupee, Layers, GraduationCap, ShieldCheck, CheckCircle2, Share2, Check
+  ExternalLink, Sparkles, Filter, IndianRupee, Layers, GraduationCap, ShieldCheck, CheckCircle2, Share2, Check, X
 } from 'lucide-react';
 import VisitorHeader from '@/components/VisitorHeader';
 import VisitorFooter from '@/components/VisitorFooter';
@@ -37,12 +37,13 @@ export default function JobsPage() {
       .catch(() => {});
   }, []);
 
-  const fetchJobs = async () => {
+  const fetchJobs = async (overrideSearch) => {
     setLoading(true);
     setCurrentPage(1);
     try {
       const queryParams = new URLSearchParams();
-      if (searchQuery) queryParams.append('search', searchQuery);
+      const q = overrideSearch !== undefined ? overrideSearch : searchQuery;
+      if (q) queryParams.append('search', q);
       if (selectedCategory !== 'All') queryParams.append('category', selectedCategory);
       if (selectedLocation !== 'All') queryParams.append('location', selectedLocation);
 
@@ -65,6 +66,11 @@ export default function JobsPage() {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     fetchJobs();
+  };
+
+  const handleClearSearch = () => {
+    setSearchQuery('');
+    fetchJobs('');
   };
 
   const formatSalary = (min, max) => {
@@ -195,7 +201,7 @@ export default function JobsPage() {
 
           {/* Integrated Search Box & City Input */}
           <form onSubmit={handleSearchSubmit} className="courses-hero-search-box" style={{ gap: '10px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', flex: 1, gap: '8px' }}>
+            <div style={{ position: 'relative', display: 'flex', alignItems: 'center', flex: 1 }}>
               <Search size={18} className="search-box-icon" />
               <input
                 type="text"
@@ -203,21 +209,54 @@ export default function JobsPage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="hero-search-input-field"
+                style={{ paddingRight: searchQuery ? '42px' : '16px' }}
               />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={handleClearSearch}
+                  title="Clear search text"
+                  style={{
+                    position: 'absolute',
+                    right: '12px',
+                    background: 'transparent',
+                    border: 'none',
+                    color: '#64748b',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '4px',
+                    borderRadius: '50%',
+                    transition: 'all 0.2s ease',
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.color = '#0f172a'}
+                  onMouseLeave={(e) => e.currentTarget.style.color = '#64748b'}
+                >
+                  <X size={18} />
+                </button>
+              )}
             </div>
-            {searchQuery ? (
-              <button 
-                type="button" 
-                onClick={() => { setSearchQuery(''); fetchJobs(); }} 
-                className="btn-clear-search"
-              >
-                Clear
-              </button>
-            ) : (
-              <button type="submit" className="btn-clear-search" style={{ backgroundColor: '#FF7518', color: '#fff' }}>
-                Search Jobs
-              </button>
-            )}
+
+            <button 
+              type="submit" 
+              className="btn-clear-search" 
+              style={{ 
+                position: 'static',
+                backgroundColor: '#FF7518', 
+                color: '#fff', 
+                whiteSpace: 'nowrap',
+                padding: '12px 22px',
+                borderRadius: '30px',
+                fontWeight: '700',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px'
+              }}
+            >
+              <Search size={16} />
+              <span>Search Jobs</span>
+            </button>
           </form>
 
           {/* Internship Callout Banner */}

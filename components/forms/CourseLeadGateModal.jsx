@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { BookOpen, User, Phone, Mail, GraduationCap, Clock, CheckCircle2, Lock, X } from 'lucide-react';
+import ResponsiveSelect from './ResponsiveSelect';
 
 export default function CourseLeadGateModal({ course, isOpen, onSuccess, onClose }) {
   const [availableCourses, setAvailableCourses] = useState([]);
@@ -186,24 +187,17 @@ export default function CourseLeadGateModal({ course, isOpen, onSuccess, onClose
               </div>
             )}
 
-            {/* Selected Course Dropdown with proper icon spacing */}
+            {/* Selected Course Dropdown with proper mobile responsive dropdown */}
             <div className="form-group-block">
               <label className="form-label-text">Select Course to Enroll *</label>
-              <div className="input-icon-wrapper">
-                <BookOpen size={16} className="input-icon" />
-                <select
-                  value={selectedCourse}
-                  onChange={(e) => setSelectedCourse(e.target.value)}
-                  className="form-select-with-icon"
-                  required
-                >
-                  {allDropdownOptions.map((title, idx) => (
-                    <option key={idx} value={title}>
-                      {title}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <ResponsiveSelect
+                value={selectedCourse}
+                onChange={(val) => setSelectedCourse(val)}
+                options={allDropdownOptions}
+                icon={<BookOpen size={16} />}
+                placeholder="Select Course to Enroll"
+                required
+              />
             </div>
 
             {/* Full Name & Phone */}
