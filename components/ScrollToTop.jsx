@@ -1,11 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { ArrowUp } from 'lucide-react';
 
 export default function ScrollToTop() {
   const [visible, setVisible] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,6 +34,8 @@ export default function ScrollToTop() {
       behavior: 'smooth'
     });
   };
+
+  if (pathname && pathname.startsWith('/studio')) return null;
 
   return (
     <button

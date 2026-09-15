@@ -199,8 +199,8 @@ export default function VisitorFooter() {
           © {currentYear} {branding.title}. {copyrightText}
         </div>
         <div className="footer-bottom-links">
-          <Link href="/contact" className="footer-bottom-link">Privacy Policy</Link>
-          <Link href="/contact" className="footer-bottom-link">Terms of Service</Link>
+          <Link href="/privacy-policy" className="footer-bottom-link">Privacy Policy</Link>
+          <Link href="/terms-of-service" className="footer-bottom-link">Terms of Service</Link>
         </div>
       </div>
 

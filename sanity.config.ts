@@ -12,7 +12,7 @@ import LeadsSpreadsheetComponent from './sanity/tools/LeadsSpreadsheetComponent'
 import CertificateImportTool from './sanity/tools/CertificateImportTool';
 import SeedContentTool from './sanity/tools/SeedContentTool';
 import GoogleAnalyticsTool from './sanity/tools/GoogleAnalyticsTool';
-import { ChartIcon } from '@sanity/icons';
+import { ActivityIcon } from '@sanity/icons';
 
 const SINGLETON_TYPES = new Set(['siteSettings', 'homePage', 'aboutPage', 'contactPage']);
 
@@ -48,7 +48,7 @@ const certificateImportTool: Tool = {
 const googleAnalyticsTool: Tool = {
   name: 'google-analytics',
   title: '📈 Website Analytics',
-  icon: ChartIcon,
+  icon: ActivityIcon,
   component: GoogleAnalyticsTool,
 };
 

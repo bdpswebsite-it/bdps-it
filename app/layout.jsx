@@ -1,6 +1,7 @@
 import { Outfit } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
+import './visitor.css';
 import PopupAdModal from '@/components/integrations/PopupAdModal';
 import ScrollToTop from '@/components/ScrollToTop';
 

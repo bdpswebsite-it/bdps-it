@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Flex, Heading, Button, Badge, Card, Text, Stack } from '@sanity/ui';
-import { LaunchIcon, ChartIcon, InfoOutlineIcon } from '@sanity/icons';
+import { LaunchIcon, ActivityIcon, InfoOutlineIcon } from '@sanity/icons';
 
 export default function GoogleAnalyticsTool() {
   const initialEmbedUrl = process.env.NEXT_PUBLIC_LOOKER_STUDIO_URL || '';
@@ -158,7 +158,7 @@ export default function GoogleAnalyticsTool() {
                     href="https://analytics.google.com/analytics/web/#/p/reports/realtime"
                     target="_blank"
                     rel="noreferrer"
-                    icon={ChartIcon}
+                    icon={ActivityIcon}
                     text="Realtime Visitors"
                     tone="default"
                   />
@@ -167,7 +167,7 @@ export default function GoogleAnalyticsTool() {
                     href="https://analytics.google.com/analytics/web/#/p/reports/conversions"
                     target="_blank"
                     rel="noreferrer"
-                    icon={ChartIcon}
+                    icon={ActivityIcon}
                     text="Key Events (generate_lead)"
                     tone="positive"
                   />

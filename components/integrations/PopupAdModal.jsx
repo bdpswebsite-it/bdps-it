@@ -1,15 +1,22 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { X, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 export default function PopupAdModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [adData, setAdData] = useState(null);
+  const pathname = usePathname();
 
   useEffect(() => {
-    // Fetch live popup ad from Sanity CMS via API with no-store cache
+    // Disable popup ad on Sanity Studio routes
+    if (pathname && pathname.startsWith('/studio')) {
+      return;
+    }
+
+    // Fetch live popup ad from Sanity CMS on initial page load / refresh
     fetch('/api/popup-ad', { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {
@@ -20,7 +27,6 @@ export default function PopupAdModal() {
           }, 1000);
           return () => clearTimeout(timer);
         } else {
-          // No active popup ad configured in Sanity CMS - keep closed
           setIsOpen(false);
           setAdData(null);
         }
@@ -28,12 +34,14 @@ export default function PopupAdModal() {
       .catch(err => {
         console.error('Error fetching popup ad:', err);
       });
-  }, []);
+  }, []); // Empty dependency array: runs ONLY when website opens or page refreshes
 
   const handleClose = () => {
     setIsOpen(false);
   };
 
+  // Do not render on Studio routes or if closed/no data
+  if (pathname && pathname.startsWith('/studio')) return null;
   if (!isOpen || !adData) return null;
 
   return (
