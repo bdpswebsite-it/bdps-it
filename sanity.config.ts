@@ -181,6 +181,15 @@ export default defineConfig({
                       .child(S.documentTypeList('jobLead').title('Job Portal Applicants')),
                   ])
               ),
+
+            S.divider(),
+
+            // 📢 Homepage Marquee Ticker Entries
+            S.listItem()
+              .title('Homepage Marquee Entries')
+              .icon(SparklesIcon)
+              .schemaType('homeMarqueeItem')
+              .child(S.documentTypeList('homeMarqueeItem').title('Homepage Marquee Entries')),
           ]),
     }),
   ],

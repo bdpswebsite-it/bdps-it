@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getSanityHomePage } from '@/lib/sanity.client';
+import { getSanityHomePage, getSanityMarqueeItems } from '@/lib/sanity.client';
 
 export const revalidate = 60;
 
@@ -37,9 +37,14 @@ export const DEFAULT_HOME_PAGE = {
     { icon: 'Compass', title: 'Career Counseling', desc: '1-on-1 personalized career roadmap guidance.' },
   ],
   jobsMarqueeTitle: '🔥 LATEST JOB OPENINGS',
+  marqueeItems: [
+    { badge: 'HOT OPENING', title: 'Special Placement Drive for Trained Freshers', subtitle: 'Hyderabad / Vizag' },
+    { badge: 'BDPS ADMISSIONS', title: 'Admissions Open for Full Stack & Python AI Tracks', subtitle: 'Starting This Week' },
+    { badge: 'CAREER CELL', title: '100+ Active IT & Commercial Accounting Vacancies', subtitle: 'Kakinada & AP' },
+  ],
   customJobMarqueeItems: [
-    { company: 'TCS / INFOSYS', title: 'Special Off-Campus Drive for Trained Freshers', location: 'Hyderabad / Vizag', link: '/jobs' },
-    { company: 'BDPS CAREER CELL', title: '100+ Active IT & Accounting Placements Open', location: 'Kakinada HQ', link: '/jobs' },
+    { company: 'HOT OPENING', title: 'Special Placement Drive for Trained Freshers', location: 'Hyderabad / Vizag' },
+    { company: 'BDPS CAREER CELL', title: '100+ Active IT & Accounting Placements Open', location: 'Kakinada HQ' },
   ],
   hiringPartnersTitle: 'Our Alumni Work At Top IT & Enterprise Firms',
   hiringPartnersSubtitle: 'Direct placement referrals with 800+ recruiting enterprises and regional offices.',
@@ -58,11 +63,25 @@ export const DEFAULT_HOME_PAGE = {
 
 export async function GET() {
   try {
-    const data = await getSanityHomePage();
+    const [data, marqueeEntries] = await Promise.all([
+      getSanityHomePage(),
+      getSanityMarqueeItems(),
+    ]);
+
+    const resolvedHomeData = data || DEFAULT_HOME_PAGE;
+    const finalMarqueeItems = (Array.isArray(marqueeEntries) && marqueeEntries.length > 0)
+      ? marqueeEntries
+      : (Array.isArray(resolvedHomeData.customJobMarqueeItems) && resolvedHomeData.customJobMarqueeItems.length > 0
+          ? resolvedHomeData.customJobMarqueeItems
+          : (resolvedHomeData.marqueeItems || DEFAULT_HOME_PAGE.marqueeItems));
+
     return NextResponse.json(
       {
         success: true,
-        data: data || DEFAULT_HOME_PAGE,
+        data: {
+          ...resolvedHomeData,
+          marqueeItems: finalMarqueeItems,
+        },
       },
       {
         headers: {
@@ -78,3 +97,4 @@ export async function GET() {
     });
   }
 }
+

@@ -199,64 +199,28 @@ export default function JobsPage() {
             Discover verified job openings in Software Engineering, Java, Full Stack, Tally Accounting, and Computer Operations with placement assistance.
           </p>
 
-          {/* Integrated Search Box & City Input */}
-          <form onSubmit={handleSearchSubmit} className="courses-hero-search-box" style={{ gap: '10px' }}>
-            <div style={{ position: 'relative', display: 'flex', alignItems: 'center', flex: 1 }}>
-              <Search size={18} className="search-box-icon" />
+          {/* Integrated Search Box */}
+          <form onSubmit={handleSearchSubmit} className="site-search-wrapper">
+            <div className="site-search-input-box">
               <input
                 type="text"
                 placeholder="Search job title, skill, or company (e.g. Java, Developer, Tally)..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="hero-search-input-field"
-                style={{ paddingRight: searchQuery ? '42px' : '16px' }}
+                className="site-search-input-field"
               />
-              {searchQuery && (
-                <button
-                  type="button"
-                  onClick={handleClearSearch}
-                  title="Clear search text"
-                  style={{
-                    position: 'absolute',
-                    right: '12px',
-                    background: 'transparent',
-                    border: 'none',
-                    color: '#64748b',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '4px',
-                    borderRadius: '50%',
-                    transition: 'all 0.2s ease',
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.color = '#0f172a'}
-                  onMouseLeave={(e) => e.currentTarget.style.color = '#64748b'}
-                >
-                  <X size={18} />
-                </button>
-              )}
+              <Search size={18} className="site-search-icon-inside" />
             </div>
 
-            <button 
-              type="submit" 
-              className="btn-clear-search" 
-              style={{ 
-                position: 'static',
-                backgroundColor: '#FF7518', 
-                color: '#fff', 
-                whiteSpace: 'nowrap',
-                padding: '12px 22px',
-                borderRadius: '30px',
-                fontWeight: '700',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px'
-              }}
-            >
-              <Search size={16} />
-              <span>Search Jobs</span>
-            </button>
+            {searchQuery && (
+              <button 
+                type="button" 
+                onClick={handleClearSearch} 
+                className="site-search-clear-btn"
+              >
+                Clear
+              </button>
+            )}
           </form>
 
           {/* Internship Callout Banner */}

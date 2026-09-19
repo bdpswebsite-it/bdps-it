@@ -371,3 +371,22 @@ export async function getSanityBlogPostBySlug(slug: string) {
   }
 }
 
+export async function getSanityMarqueeItems() {
+  try {
+    const query = `*[_type == "homeMarqueeItem" && isActive != false && !(_id in path("drafts.**"))] | order(order asc, _createdAt desc) {
+      _id,
+      title,
+      badge,
+      subtitle,
+      link,
+      isActive,
+      order
+    }`;
+    const items = await sanityClient.fetch(query, {}, { cache: 'no-store' });
+    return Array.isArray(items) ? items : [];
+  } catch (error) {
+    console.error('Error fetching marquee items from Sanity:', error);
+    return [];
+  }
+}
+

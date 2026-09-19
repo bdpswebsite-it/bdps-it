@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   BookOpen, Star, Clock, User, Share2, ArrowRight, CheckCircle2, 
   Award, ShieldCheck, ChevronLeft, ChevronRight,
-  TrendingUp, Code, Cloud, Database, ShieldAlert, Cpu, X, Bot, Sparkles, Briefcase, FileText, Target, Compass, HeartHandshake, Layers, GraduationCap, Users, Trophy
+  TrendingUp, Code, Cloud, Database, ShieldAlert, Cpu, X, Bot, Sparkles, Briefcase, FileText, Target, Compass, HeartHandshake, Layers, GraduationCap, Users, Trophy, Search
 } from 'lucide-react';
 import VisitorHeader from '@/components/VisitorHeader';
 import VisitorFooter from '@/components/VisitorFooter';
@@ -101,24 +101,13 @@ export default function VisitorHomepage() {
 
   const [homeData, setHomeData] = useState(DEFAULT_HOME_PAGE);
   const [testimonials, setTestimonials] = useState(DEFAULT_TESTIMONIALS);
-  const [latestJobs, setLatestJobs] = useState([]);
+  const [courseSearchQuery, setCourseSearchQuery] = useState('');
 
   const [selectedCategoryTab, setSelectedCategoryTab] = useState('All');
   const [activeSlide, setActiveSlide] = useState(0);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
 
   const [sanityCategories, setSanityCategories] = useState([]);
-
-  // Fetch latest real jobs from Sanity CMS for home page marquee
-  useEffect(() => {
-    fetchCached('/api/jobs')
-      .then(data => {
-        if (data && data.success && Array.isArray(data.jobs) && data.jobs.length > 0) {
-          setLatestJobs(data.jobs.slice(0, 15));
-        }
-      })
-      .catch(() => {});
-  }, []);
 
   // Fetch live courses & categories from Sanity CMS — fall back to defaults only if Sanity returns nothing
   useEffect(() => {
@@ -190,15 +179,22 @@ export default function VisitorHomepage() {
     ...courses.map(c => c.category).filter(Boolean)
   ])];
 
-  const filteredExploreCourses = (selectedCategoryTab === 'All'
-    ? courses
-    : courses.filter(c => c.category && c.category.toLowerCase().includes(selectedCategoryTab.toLowerCase()))
-  ).slice(0, 6);
+  const filteredExploreCourses = courses.filter(c => {
+    const matchesCategory = selectedCategoryTab === 'All'
+      || (c.category && c.category.toLowerCase().includes(selectedCategoryTab.toLowerCase()));
+    const q = courseSearchQuery.trim().toLowerCase();
+    const matchesSearch = !q
+      || (c.title && c.title.toLowerCase().includes(q))
+      || (c.category && c.category.toLowerCase().includes(q))
+      || (c.subtitle && c.subtitle.toLowerCase().includes(q));
+    return matchesCategory && matchesSearch;
+  }).slice(0, 6);
 
-  const jobMarqueeItems = [
-    ...(homeData.customJobMarqueeItems || []),
-    ...latestJobs.filter(j => j.showInMarquee !== false)
-  ];
+  const jobMarqueeItems = (homeData.marqueeItems && homeData.marqueeItems.length > 0)
+    ? homeData.marqueeItems
+    : (homeData.customJobMarqueeItems && homeData.customJobMarqueeItems.length > 0
+        ? homeData.customJobMarqueeItems
+        : (DEFAULT_HOME_PAGE.marqueeItems || []));
 
   const rawPartners = Array.isArray(homeData?.hiringPartners) ? homeData.hiringPartners : [];
   const validPartners = rawPartners
@@ -435,7 +431,7 @@ export default function VisitorHomepage() {
             </span>
           </div>
 
-          <section className="marquee-section" style={{ background: 'linear-gradient(135deg, #BD601C 0%, #7A3700 100%)' }}>
+          <section className="marquee-section marquee-section-brand-gradient">
             <div className="marquee-header">
               <span className="marquee-tag">
                 {homeData.jobsMarqueeTitle || '🔥 LATEST JOB OPENINGS'}
@@ -444,22 +440,33 @@ export default function VisitorHomepage() {
 
             <div className="marquee-container">
               <div className="jobs-marquee-single-track">
-                {jobMarqueeItems.map((job, idx) => {
-                  const targetHref = job.link || (job._id || job.id ? `/jobs/${job._id || job.id || job.adzunaId}` : '/jobs');
-                  return (
-                    <Link 
-                      key={idx} 
-                      href={targetHref}
-                      className="marquee-item"
-                      style={{ color: '#ffffff', textDecoration: 'none' }}
-                    >
-                      <span style={{ fontWeight: '800', color: '#FFEAD5', textTransform: 'uppercase' }}>{job.company || 'BDPS Partner'}</span>
-                      <span style={{ textTransform: 'uppercase' }}>{job.title}</span>
-                      {job.location && (
-                        <span style={{ color: '#FFD8B2', fontSize: '12px' }}>({job.location})</span>
+                {jobMarqueeItems.map((item, idx) => {
+                  const content = (
+                    <>
+                      <span className="jobs-marquee-brand-company">{item.badge || item.company || 'BDPS'}</span>
+                      <span className="jobs-marquee-brand-title">{item.title}</span>
+                      {(item.subtitle || item.location) && (
+                        <span className="jobs-marquee-brand-loc">({item.subtitle || item.location})</span>
                       )}
                       <span className="marquee-bullet">•</span>
+                    </>
+                  );
+
+                  return item.link ? (
+                    <Link 
+                      key={idx} 
+                      href={item.link}
+                      className="marquee-item jobs-marquee-brand-item"
+                    >
+                      {content}
                     </Link>
+                  ) : (
+                    <span 
+                      key={idx} 
+                      className="marquee-item jobs-marquee-brand-item"
+                    >
+                      {content}
+                    </span>
                   );
                 })}
               </div>
@@ -482,6 +489,30 @@ export default function VisitorHomepage() {
           <p className="about-paragraph">
             {homeData.featuredCoursesSubtitle || 'Choose from our job-oriented software, AI, accounting, and technical tracks.'}
           </p>
+        </div>
+
+        {/* Search Bar on top of Categories */}
+        <div className="site-search-wrapper search-light search-centered">
+          <div className="site-search-input-box">
+            <input
+              type="text"
+              placeholder="Search training programs (e.g. Java, Python, Tally, Full Stack)..."
+              aria-label="Search training programs"
+              value={courseSearchQuery}
+              onChange={(e) => setCourseSearchQuery(e.target.value)}
+              className="site-search-input-field"
+            />
+            <Search size={18} className="site-search-icon-inside" />
+          </div>
+          {courseSearchQuery && (
+            <button
+              type="button"
+              onClick={() => setCourseSearchQuery('')}
+              className="site-search-clear-btn"
+            >
+              Clear
+            </button>
+          )}
         </div>
 
         {/* Category Tabs Selector */}

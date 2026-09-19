@@ -281,15 +281,26 @@ export default function TermsOfServiceClient() {
           </p>
 
           <div className="legal-hero-controls">
-            <div className="legal-search-box">
-              <Search size={18} className="legal-search-icon" />
-              <input
-                type="text"
-                placeholder="Search terms (e.g., fees, placement, EHF, prohibited)..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="legal-search-input"
-              />
+            <div className="legal-search-box-container">
+              <div className="legal-search-box">
+                <input
+                  type="text"
+                  placeholder="Search terms (e.g., fees, placement, EHF, prohibited)..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="legal-search-input"
+                />
+                <Search size={18} className="legal-search-icon" />
+              </div>
+              {searchTerm && (
+                <button
+                  type="button"
+                  onClick={() => setSearchTerm('')}
+                  className="site-search-clear-btn"
+                >
+                  Clear
+                </button>
+              )}
             </div>
             <button onClick={handlePrint} className="legal-action-btn" title="Print document">
               <Printer size={16} /> Print Document

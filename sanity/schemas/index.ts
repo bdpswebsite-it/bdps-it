@@ -15,6 +15,7 @@ import { contactPageSchema } from './contactPage';
 import { testimonialSchema } from './testimonial';
 
 import { blogSchema } from './blog';
+import { homeMarqueeItemSchema } from './homeMarqueeItem';
 
 export const schemaTypes = [
   // Global & Page Singletons
@@ -32,6 +33,7 @@ export const schemaTypes = [
   popupAdSchema,
   jobPostingSchema,
   certificateSchema,
+  homeMarqueeItemSchema,
 
   // Applications & Leads
   leadSubmissionSchema,

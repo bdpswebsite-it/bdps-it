@@ -99,20 +99,23 @@ function VisitorCoursesCatalogContent() {
           </p>
 
           {/* Integrated Hero Search Box */}
-          <div className="courses-hero-search-box">
-            <Search size={18} className="search-box-icon" />
-            <input
-              type="text"
-              placeholder="Search course name (e.g. Java, Python, Tally, PGDCA)..."
-              aria-label="Search course name"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="hero-search-input-field"
-            />
+          <div className="site-search-wrapper">
+            <div className="site-search-input-box">
+              <input
+                type="text"
+                placeholder="Search course name (e.g. Java, Python, Tally, PGDCA)..."
+                aria-label="Search course name"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="site-search-input-field"
+              />
+              <Search size={18} className="site-search-icon-inside" />
+            </div>
             {searchQuery && (
               <button 
+                type="button"
                 onClick={() => setSearchQuery('')} 
-                className="btn-clear-search"
+                className="site-search-clear-btn"
               >
                 Clear
               </button>

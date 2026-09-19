@@ -47,25 +47,26 @@ export default function BlogCatalogClient({ initialPosts = [] }) {
           </p>
 
           {/* Search Bar */}
-          <div style={{ maxWidth: '560px', margin: '0 auto', position: 'relative' }}>
-            <Search style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} size={20} />
-            <input
-              type="text"
-              placeholder="Search articles by title or keyword..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '14px 20px 14px 48px',
-                borderRadius: '12px',
-                border: '1px solid rgba(255,255,255,0.15)',
-                background: 'rgba(255,255,255,0.08)',
-                color: '#ffffff',
-                fontSize: '1rem',
-                outline: 'none',
-                backdropFilter: 'blur(10px)',
-              }}
-            />
+          <div className="site-search-wrapper search-centered">
+            <div className="site-search-input-box">
+              <input
+                type="text"
+                placeholder="Search articles by title or keyword..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="site-search-input-field"
+              />
+              <Search size={18} className="site-search-icon-inside" />
+            </div>
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery('')}
+                className="site-search-clear-btn"
+              >
+                Clear
+              </button>
+            )}
           </div>
         </div>
       </section>
