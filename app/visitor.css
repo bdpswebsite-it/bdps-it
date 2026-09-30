@@ -3889,7 +3889,7 @@ body {
 .marquee-section {
   background-color: #964500;
   color: #FFFFFF;
-  padding: 20px 0;
+  padding: 16px 0;
   overflow: hidden;
   position: relative;
   width: 100%;
@@ -3897,7 +3897,7 @@ body {
 
 .marquee-header {
   text-align: center;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .marquee-tag {
@@ -3914,6 +3914,7 @@ body {
   white-space: nowrap;
   position: relative;
   display: flex;
+  padding: 10px 0;
 }
 
 .marquee-track {
@@ -3921,6 +3922,7 @@ body {
   align-items: center;
   width: max-content;
   animation: partnerMarquee 28s linear infinite;
+  padding: 4px 0;
 }
 
 .marquee-track-reverse {
@@ -3928,13 +3930,14 @@ body {
   align-items: center;
   width: max-content;
   animation: partnerMarqueeReverse 32s linear infinite;
+  padding: 4px 0;
 }
 
 .marquee-item {
   display: inline-flex;
   align-items: center;
   gap: 16px;
-  padding: 0 8px;
+  padding: 4px 8px;
   font-size: 13.5px;
   font-weight: 800;
   text-transform: uppercase;
@@ -3947,25 +3950,28 @@ body {
   align-items: center;
   justify-content: center;
   background-color: #FFFFFF;
-  padding: 6px 16px;
-  border-radius: 8px;
+  padding: 8px 18px;
+  border-radius: 9px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.25);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  height: 44px;
-  min-width: 80px;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  height: 48px;
+  min-width: 85px;
   box-sizing: border-box;
+  position: relative;
+  overflow: visible;
 }
 
 .marquee-company-card:hover {
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.38);
+  z-index: 10;
 }
 
 .marquee-company-logo {
-  height: 26px;
+  height: 28px;
   width: auto;
-  max-width: 100px;
+  max-width: 105px;
   object-fit: contain;
   display: block;
 }
