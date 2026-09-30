@@ -234,35 +234,67 @@ export const homePageSchema = {
       title: 'Hiring Partner Companies & Logos',
       type: 'array',
       fieldset: 'partners',
-      description: 'Add company names or upload company partner logos for the scrolling alumni partner marquee.',
+      description: 'Manage companies displayed in the homepage alumni partner marquee. You can add new companies, upload or delete company logos, or reorder entries.',
       of: [
         {
           name: 'companyPartner',
-          title: 'Company Partner with Logo',
+          title: 'Company Partner',
           type: 'object',
           fields: [
-            { name: 'name', title: 'Company Name', type: 'string', validation: (Rule: any) => Rule.required() },
-            { name: 'logo', title: 'Company Logo Image (Optional)', type: 'image', options: { hotspot: true } },
-            { name: 'website', title: 'Website URL (Optional)', type: 'url' },
+            { 
+              name: 'name', 
+              title: 'Company Name', 
+              type: 'string', 
+              validation: (Rule: any) => Rule.required(),
+              description: 'e.g. TCS, Infosys, Wipro, Cognizant, Accenture, Microsoft, etc.'
+            },
+            { 
+              name: 'logo', 
+              title: 'Company Logo Image (Add or Delete)', 
+              type: 'image', 
+              options: { 
+                hotspot: true,
+                storeOriginalFilename: true
+              },
+              description: 'Upload custom company logo image (PNG/SVG). Click "Clear" or "Remove" to delete the logo. If deleted or left blank, default logo is automatically used for recognized companies.'
+            },
+            { 
+              name: 'website', 
+              title: 'Company Website URL (Optional)', 
+              type: 'url',
+              description: 'Optional link to company careers or main website.'
+            },
           ],
           preview: {
             select: {
               title: 'name',
               media: 'logo',
+              subtitle: 'website'
+            },
+            prepare({ title, media, subtitle }: any) {
+              return {
+                title: title || 'Untitled Company',
+                subtitle: subtitle ? `Website: ${subtitle}` : 'Hiring Partner Logo',
+                media,
+              };
             },
           },
         },
       ],
       initialValue: [
-        { name: 'TCS' },
-        { name: 'Infosys' },
-        { name: 'Wipro' },
-        { name: 'Cognizant' },
-        { name: 'Accenture' },
-        { name: 'Tech Mahindra' },
-        { name: 'HCL Tech' },
-        { name: 'Local IT Solutions' },
-        { name: 'Business Accounts Firms' },
+        { name: 'TCS', website: 'https://www.tcs.com' },
+        { name: 'Infosys', website: 'https://www.infosys.com' },
+        { name: 'Wipro', website: 'https://www.wipro.com' },
+        { name: 'Cognizant', website: 'https://www.cognizant.com' },
+        { name: 'Accenture', website: 'https://www.accenture.com' },
+        { name: 'Tech Mahindra', website: 'https://www.techmahindra.com' },
+        { name: 'HCLTech', website: 'https://www.hcltech.com' },
+        { name: 'Capgemini', website: 'https://www.capgemini.com' },
+        { name: 'IBM', website: 'https://www.ibm.com' },
+        { name: 'Deloitte', website: 'https://www.deloitte.com' },
+        { name: 'Microsoft', website: 'https://www.microsoft.com' },
+        { name: 'Amazon', website: 'https://www.amazon.jobs' },
+        { name: 'Oracle', website: 'https://www.oracle.com' },
       ],
     },
   ],

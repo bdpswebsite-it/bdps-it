@@ -9,7 +9,7 @@ export const sanityClient = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: true, // Use Sanity CDN edge caching for ultra-fast response
+  useCdn: false, // Immediate freshness for updates from Sanity Studio
 });
 
 const builder = imageUrlBuilder(sanityClient);

@@ -25,6 +25,44 @@ const DEFAULT_QUICK_LINKS = [
   { label: 'Contact Us', href: '/contact', isModal: false }
 ];
 
+const ACCREDITATION_LOGOS = [
+  {
+    src: '/Images-NGO/mca-logo.png',
+    label: 'Ministry of Corporate Affairs - Govt. of India',
+    alt: 'Ministry of Corporate Affairs (MCA)'
+  },
+  {
+    src: '/Images-NGO/niti-aayog-logo.png',
+    label: 'NITI Aayog - Govt. of India',
+    alt: 'NITI Aayog'
+  },
+  {
+    src: '/Images-NGO/apsche-logo.png',
+    label: 'APSCHE - Andhra Pradesh State Council of Higher Education',
+    alt: 'APSCHE'
+  },
+  {
+    src: '/Images-NGO/msme-logo.png',
+    label: 'MSME - Micro, Small & Medium Enterprises',
+    alt: 'MSME Govt of India'
+  },
+  {
+    src: '/Images-NGO/jas-anz-logo.png',
+    label: 'JAS-ANZ ISO 9001:2000 Certified',
+    alt: 'JAS-ANZ ISO 9001'
+  },
+  {
+    src: '/Images-NGO/ehf-logo.png',
+    label: 'Embracing Humanity Foundation (EHF) - CSR Partner',
+    alt: 'Embracing Humanity Foundation'
+  },
+  {
+    src: '/Images-NGO/bdps-since-2004.png',
+    label: 'BDPS Computer Education - Excellence Since 2004',
+    alt: 'BDPS Since 2004 Badge'
+  }
+];
+
 export default function VisitorFooter() {
   const [internshipModalOpen, setInternshipModalOpen] = useState(false);
   const [siteSettings, setSiteSettings] = useState(null);
@@ -103,6 +141,22 @@ export default function VisitorFooter() {
           <p className="footer-tagline">
             {branding.tagline}
           </p>
+          <div className="footer-accreditations-wrap">
+            <div className="footer-accreditations-grid">
+              {ACCREDITATION_LOGOS.map((item, idx) => (
+                <div key={idx} className="footer-accreditation-card" title={item.label}>
+                  <img
+                    src={item.src}
+                    alt={item.alt}
+                    className="footer-accreditation-img"
+                    width="60"
+                    height="30"
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
           {showCsr && (
             <p className="footer-csr-tag">
               {csrText}
@@ -151,8 +205,7 @@ export default function VisitorFooter() {
                 {link.isModal ? (
                   <button 
                     onClick={() => setInternshipModalOpen(true)}
-                    className="footer-link-item"
-                    style={{ background: 'none', border: 'none', padding: 0, font: 'inherit', cursor: 'pointer' }}
+                    className="footer-link-item footer-link-btn"
                   >
                     <ArrowRight size={12} className="contact-icon" /> {link.label}
                   </button>

@@ -98,6 +98,12 @@ async function performSeed() {
     supportPillars: DEFAULT_HOME_PAGE.supportPillars.map((p, idx) => ({
       _key: `pillar_${idx}`,
       ...p
+    })),
+    hiringPartners: DEFAULT_HOME_PAGE.hiringPartners.map((p, idx) => ({
+      _key: `partner_${idx}`,
+      _type: 'companyPartner',
+      name: p.name,
+      website: p.website
     }))
   };
   await sanityWriteClient.createOrReplace(homePageDoc);

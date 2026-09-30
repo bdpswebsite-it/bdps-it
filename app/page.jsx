@@ -196,18 +196,57 @@ export default function VisitorHomepage() {
         ? homeData.customJobMarqueeItems
         : (DEFAULT_HOME_PAGE.marqueeItems || []));
 
+  const DEFAULT_COMPANY_LOGOS = {
+    'tcs': '/companies/tcs.svg',
+    'tata consultancy services': '/companies/tcs.svg',
+    'infosys': '/companies/infosys.svg',
+    'wipro': '/companies/wipro.svg',
+    'cognizant': '/companies/cognizant.svg',
+    'accenture': '/companies/accenture.svg',
+    'tech mahindra': '/companies/tech-mahindra.svg',
+    'techmahindra': '/companies/tech-mahindra.svg',
+    'hcl': '/companies/hcl.svg',
+    'hcl tech': '/companies/hcl.svg',
+    'hcltech': '/companies/hcl.svg',
+    'capgemini': '/companies/capgemini.svg',
+    'ibm': '/companies/ibm.svg',
+    'deloitte': '/companies/deloitte.svg',
+    'microsoft': '/companies/microsoft.svg',
+    'amazon': '/companies/amazon.svg',
+    'oracle': '/companies/oracle.svg',
+  };
+
   const rawPartners = Array.isArray(homeData?.hiringPartners) ? homeData.hiringPartners : [];
   const validPartners = rawPartners
     .map(p => {
       if (!p) return null;
-      if (typeof p === 'string') return p.trim() || null;
+      if (typeof p === 'string') {
+        const trimmed = p.trim();
+        if (!trimmed) return null;
+        return {
+          name: trimmed,
+          logo: DEFAULT_COMPANY_LOGOS[trimmed.toLowerCase()] || null,
+          website: null,
+        };
+      }
       if (typeof p === 'object') {
         const name = p.name || p.company || p.title || p.label || p.text;
         if (typeof name === 'string' && name.trim()) {
-          const logoUrl = p.logo?.asset?.url || (typeof p.logo === 'string' ? p.logo : null) || (p.logo ? urlFor(p.logo) : null);
+          const trimmedName = name.trim();
+          let logoUrl = p.logoUrl || p.logo?.asset?.url || (typeof p.logo === 'string' ? p.logo : null);
+          if (!logoUrl && p.logo && typeof p.logo === 'object') {
+            try {
+              logoUrl = urlFor(p.logo);
+            } catch (e) {
+              logoUrl = null;
+            }
+          }
+          if (!logoUrl) {
+            logoUrl = DEFAULT_COMPANY_LOGOS[trimmedName.toLowerCase()] || null;
+          }
           return {
-            name: name.trim(),
-            logo: logoUrl || null,
+            name: trimmedName,
+            logo: logoUrl,
             website: p.website || null,
           };
         }
@@ -574,26 +613,37 @@ export default function VisitorHomepage() {
               const logo = isObj ? partner.logo : null;
               const website = isObj ? partner.website : null;
 
-              const content = (
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                  {logo && (
+              const badgeContent = (
+                <div className="marquee-company-card">
+                  {logo ? (
                     <img 
                       src={logo} 
                       alt={name} 
-                      style={{ height: '26px', maxWidth: '100px', objectFit: 'contain', verticalAlign: 'middle' }} 
+                      className="marquee-company-logo"
+                      loading="lazy"
                     />
-                  )}
-                  <span>{name}</span>
-                </span>
+                  ) : null}
+                  <span className={logo ? "marquee-company-name-with-logo" : "marquee-company-name-text"}>
+                    {name}
+                  </span>
+                </div>
               );
 
               return (
                 <div key={idx} className="marquee-item">
                   {website ? (
-                    <a href={website} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>
-                      {content}
+                    <a 
+                      href={website} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="marquee-company-link"
+                      title={name}
+                    >
+                      {badgeContent}
                     </a>
-                  ) : content}
+                  ) : (
+                    badgeContent
+                  )}
                   <span className="marquee-bullet">•</span>
                 </div>
               );
