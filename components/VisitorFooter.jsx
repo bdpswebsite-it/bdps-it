@@ -25,7 +25,7 @@ const DEFAULT_QUICK_LINKS = [
   { label: 'Contact Us', href: '/contact', isModal: false }
 ];
 
-const ACCREDITATION_LOGOS = [
+const ACCREDITATION_ROW_1 = [
   {
     src: '/Images-NGO/mca-logo.png',
     label: 'Ministry of Corporate Affairs - Govt. of India',
@@ -45,7 +45,10 @@ const ACCREDITATION_LOGOS = [
     src: '/Images-NGO/msme-logo.png',
     label: 'MSME - Micro, Small & Medium Enterprises',
     alt: 'MSME Govt of India'
-  },
+  }
+];
+
+const ACCREDITATION_ROW_2 = [
   {
     src: '/Images-NGO/jas-anz-logo.png',
     label: 'JAS-ANZ ISO 9001:2000 Certified',
@@ -142,15 +145,29 @@ export default function VisitorFooter() {
             {branding.tagline}
           </p>
           <div className="footer-accreditations-wrap">
-            <div className="footer-accreditations-grid">
-              {ACCREDITATION_LOGOS.map((item, idx) => (
+            <div className="footer-accreditations-row footer-accreditations-row-1">
+              {ACCREDITATION_ROW_1.map((item, idx) => (
                 <div key={idx} className="footer-accreditation-card" title={item.label}>
                   <img
                     src={item.src}
                     alt={item.alt}
                     className="footer-accreditation-img"
-                    width="60"
-                    height="30"
+                    width="75"
+                    height="36"
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="footer-accreditations-row footer-accreditations-row-2">
+              {ACCREDITATION_ROW_2.map((item, idx) => (
+                <div key={idx} className="footer-accreditation-card" title={item.label}>
+                  <img
+                    src={item.src}
+                    alt={item.alt}
+                    className="footer-accreditation-img"
+                    width="95"
+                    height="36"
                     loading="lazy"
                   />
                 </div>
