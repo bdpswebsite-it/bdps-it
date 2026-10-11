@@ -42,6 +42,9 @@ export const metadata = {
   },
   verification: {
     google: googleVerification || undefined,
+    other: {
+      'facebook-domain-verification': 'tz6hpt8e64qp9bo33r6rj0ewllryf4',
+    },
   },
   alternates: {
     canonical: siteUrl,
@@ -187,6 +190,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={outfit.variable}>
       <head>
+        <meta name="facebook-domain-verification" content="tz6hpt8e64qp9bo33r6rj0ewllryf4" />
         {/* Preconnect to crucial CDNs for instant LCP delivery */}
         <link rel="preconnect" href="https://cdn.sanity.io" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://cdn.sanity.io" />
